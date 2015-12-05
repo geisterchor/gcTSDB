@@ -21,6 +21,10 @@
 			"Rev": "723cc1e459b8eea2dea4583200fd60757d40097a"
 		},
 		{
+			"ImportPath": "github.com/shopspring/decimal",
+			"Rev": "9995dc92ee7e30b8567b1e9f192459c16f327e12"
+		},
+		{
 			"ImportPath": "gopkg.in/inf.v0",
 			"Rev": "3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4"
 		}
