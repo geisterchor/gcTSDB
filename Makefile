@@ -14,7 +14,7 @@ all:
 
 docker:
 	docker run -i --rm -v "$(shell pwd):/go/src/geisterchor.com/gctsdb" -w /go/src/geisterchor.com/gctsdb golang bash -c "make test && make"
-	docker build -f Dockerfile -t mjanduda/geisterchor-gctsdb:$(DOCKER_LABEL) .
+	docker build -f Dockerfile -t geisterchor/gctsdb:$(DOCKER_LABEL) .
 
 run: all
 	bash -c "./gcTSDB"

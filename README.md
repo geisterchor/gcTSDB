@@ -32,7 +32,8 @@ You can execute this application directly from your console like this:
 
 Or via Docker:
 
-    docker run -d --name gctsdb -p 8080:8080 geisterchor/gctsdb
+    docker run -d --name gctsdb -p 8080:8080 -e CASSANDRA_HOSTS=cas1,cas2,cas3 \
+        CASSANDRA_USER=dev CASSANDRA_PASSWORD=dev geisterchor/gctsdb
 
 
 License
