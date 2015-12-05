@@ -6,12 +6,19 @@ import (
 
 func InitializeSchema(cClient *CassandraClient) error {
 	if err := cClient.GetSession().Query(`CREATE TABLE IF NOT EXISTS gctsdb_index (
-      category text,
+      pk int,
       channel text,
-      type text static,
-      bucket_size bigint static,
-      buckets bigint,
-      PRIMARY KEY (category, channel, buckets)
+      type text,
+      bucket_size bigint,
+      PRIMARY KEY (pk, channel)
+    );`).Consistency(gocql.Quorum).Exec(); err != nil {
+		return err
+	}
+
+	if err := cClient.GetSession().Query(`CREATE TABLE IF NOT EXISTS gctsdb_buckets (
+      channel text,
+      bucket bigint,
+      PRIMARY KEY (channel, bucket)
     );`).Consistency(gocql.Quorum).Exec(); err != nil {
 		return err
 	}

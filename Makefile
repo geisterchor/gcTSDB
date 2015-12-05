@@ -10,6 +10,7 @@ install:
 		GOPATH=$(shell godep path):$(GOPATH) go install
 
 all:
+		mkdir -p target
 		go build -o gcTSDB
 
 docker:
