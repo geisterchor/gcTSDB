@@ -67,7 +67,7 @@ func (c *GCTSDBClient) GetDataPoints(channelName string, t1, t2 time.Time) ([]Da
 	for i := int64(0); i < nBuckets; i++ {
 		bucket := bucket1 + i*int64(*channel.BucketSize)
 
-		q := fmt.Sprintf("SELECT unixnano, %s FROM gctsdb_data WHERE channel = ? AND bucket = ? AND unixnano >= ? AND unixnano < ?;", channel.DataType)
+		q := fmt.Sprintf("SELECT unixnano, %s FROM gctsdb_data WHERE channel = ? AND bucket = ? AND unixnano >= ? AND unixnano < ? ORDER BY unixnano ASC;", channel.DataType)
 
 		iter := c.GetCSession().Query(q, channel.Name, bucket, t1.UnixNano(), t2.UnixNano()).Iter()
 
