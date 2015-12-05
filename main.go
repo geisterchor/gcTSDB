@@ -56,8 +56,13 @@ func main() {
 		log.Errorf("Could not add data point: %s", err)
 	}
 
+	ps, err := gctsdbClient.GetDataPoints("temperature", time.Now().Add(-time.Hour), time.Now().Add(time.Hour))
+	if err != nil {
+		log.Errorf("Could not get data points: %s", err)
+	}
+	log.Infof("Got %d points: %s", len(ps), ps)
+
 	if err := gctsdbClient.DeleteChannel("temperature"); err != nil {
 		log.Errorf("Could not delete channel: %s", err)
 	}
-
 }

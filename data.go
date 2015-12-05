@@ -1,8 +1,8 @@
 package main
 
 import (
-	//	"github.com/shopspring/decimal"
 	//log "github.com/Sirupsen/logrus"
+	"github.com/shopspring/decimal"
 
 	"fmt"
 	"time"
@@ -50,4 +50,78 @@ func (c *GCTSDBClient) AddDataPoints(channel *Channel, points []DataPoint) error
 	}
 
 	return nil
+}
+
+func (c *GCTSDBClient) GetDataPoints(channelName string, t1, t2 time.Time) ([]DataPoint, error) {
+	channel, err := c.GetChannel(channelName)
+	if err != nil {
+		return nil, err
+	}
+
+	bucket1 := t1.UnixNano() - (t1.UnixNano() % int64(*channel.BucketSize))
+	bucket2 := t2.UnixNano() - (t2.UnixNano() % int64(*channel.BucketSize))
+
+	nBuckets := (bucket2-bucket1)/int64(*channel.BucketSize) + 1
+
+	var points []DataPoint
+	for i := int64(0); i < nBuckets; i++ {
+		bucket := bucket1 + i*int64(*channel.BucketSize)
+
+		q := fmt.Sprintf("SELECT unixnano, %s FROM gctsdb_data WHERE channel = ? AND bucket = ? AND unixnano >= ? AND unixnano < ?;", channel.DataType)
+
+		iter := c.GetCSession().Query(q, channel.Name, bucket, t1.UnixNano(), t2.UnixNano()).Iter()
+
+		p := DataPoint{}
+		var t int64
+		if channel.DataType == "i32" {
+			var val int32
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+		if channel.DataType == "i64" {
+			var val int64
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+		if channel.DataType == "f32" {
+			var val float32
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+		if channel.DataType == "f64" {
+			var val float64
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+		if channel.DataType == "dec" {
+			var val decimal.Decimal
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+		if channel.DataType == "str" {
+			var val string
+			for iter.Scan(&t, &val) {
+				p.Value = val
+				p.Timestamp = time.Unix(0, t)
+				points = append(points, p)
+			}
+		}
+	}
+
+	return points, nil
 }

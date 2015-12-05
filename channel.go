@@ -91,14 +91,24 @@ func (c *GCTSDBClient) DeleteChannel(channel string) error {
 	return nil
 }
 
-func (c *GCTSDBClient) GetChannels(prefix string) []string {
+func (c *GCTSDBClient) GetChannel(name string) (*Channel, error) {
+	var ch Channel
+	if err := c.GetCSession().Query("SELECT channel, type, bucket_size FROM gctsdb_index WHERE pk = 0 AND channel = ?;",
+		name).Scan(&ch.Name, &ch.DataType, &ch.BucketSize); err != nil {
+		return nil, err
+	}
+
+	return &ch, nil
+}
+
+func (c *GCTSDBClient) GetChannels(prefix string) []Channel {
 	incrPrefix := []byte(prefix)
 	incrPrefix[len(incrPrefix)-1] += 1
-	iter := c.GetCSession().Query("SELECT channel FROM gctsdb_index WHERE pk = 0 AND channel >= ? AND channel < ?;", prefix, string(incrPrefix)).Iter()
+	iter := c.GetCSession().Query("SELECT channel, type, bucket_size FROM gctsdb_index WHERE pk = 0 AND channel >= ? AND channel < ?;", prefix, string(incrPrefix)).Iter()
 
-	channels := []string{}
-	var ch string
-	for iter.Scan(&ch) {
+	channels := []Channel{}
+	var ch Channel
+	for iter.Scan(&ch.Name, &ch.DataType, &ch.BucketSize) {
 		channels = append(channels, ch)
 	}
 
