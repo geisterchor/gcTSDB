@@ -1,7 +1,6 @@
 package gctsdb
 
 import (
-	//log "github.com/Sirupsen/logrus"
 	"github.com/shopspring/decimal"
 
 	"fmt"
