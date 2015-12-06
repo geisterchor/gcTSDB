@@ -6,7 +6,7 @@ Compiling
 
 You need to have Go and Make installed.
 Clone this repo, `cd` into the directory and then execute `make` to compile and
-create an executable called `gcTSDB`.
+create an executable called `gcTSDB` in the `target` directory.
 
 
 Configuration
@@ -28,7 +28,7 @@ Running
 
 You can execute this application directly from your console like this:
 
-    CASSANDRA_USER=dev CASSANDRA_PASSWORD=dev ./gcTSDB
+    CASSANDRA_USER=dev CASSANDRA_PASSWORD=dev ./target/gcTSDB
 
 Or via Docker:
 
