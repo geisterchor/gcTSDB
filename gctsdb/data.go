@@ -13,7 +13,7 @@ type DataPoint struct {
 	Value     interface{}
 }
 
-func (c *GCTSDBClient) AddDataPoints(channel *Channel, points []DataPoint) error {
+func (c *GCTSDBServer) AddDataPoints(channel *Channel, points []DataPoint) error {
 	buckets := map[int64]bool{}
 
 	for _, p := range points {
@@ -52,7 +52,7 @@ func (c *GCTSDBClient) AddDataPoints(channel *Channel, points []DataPoint) error
 	return nil
 }
 
-func (c *GCTSDBClient) GetDataPoints(channelName string, t1, t2 time.Time) ([]DataPoint, error) {
+func (c *GCTSDBServer) GetDataPoints(channelName string, t1, t2 time.Time) ([]DataPoint, error) {
 	channel, err := c.GetChannel(channelName)
 	if err != nil {
 		return nil, err

@@ -38,7 +38,7 @@ func stringInSlice(a string, list []string) bool {
 	return false
 }
 
-func (c *GCTSDBClient) CreateChannel(channel *Channel) error {
+func (c *GCTSDBServer) CreateChannel(channel *Channel) error {
 	log.Infof("Creating channel '%s' (type: '%s', bucketSize: %s)", channel.Name, channel.DataType, channel.BucketSize)
 
 	var tmp string
@@ -61,7 +61,7 @@ func (c *GCTSDBClient) CreateChannel(channel *Channel) error {
 	return nil
 }
 
-func (c *GCTSDBClient) DeleteChannel(channel string) error {
+func (c *GCTSDBServer) DeleteChannel(channel string) error {
 	log.Infof("Deleting channel '%s'", channel)
 	var tmp string
 	err := c.GetCSession().Query(`
@@ -91,7 +91,7 @@ func (c *GCTSDBClient) DeleteChannel(channel string) error {
 	return nil
 }
 
-func (c *GCTSDBClient) GetChannel(name string) (*Channel, error) {
+func (c *GCTSDBServer) GetChannel(name string) (*Channel, error) {
 
 	// TODO: Implement Channel caching
 
@@ -104,7 +104,7 @@ func (c *GCTSDBClient) GetChannel(name string) (*Channel, error) {
 	return &ch, nil
 }
 
-func (c *GCTSDBClient) GetChannels(prefix string) []Channel {
+func (c *GCTSDBServer) GetChannels(prefix string) []Channel {
 
 	// TODO: Implement Channel caching, see Redis ZRANGEBYLEX (http://redis.io/commands/zrangebylex)
 

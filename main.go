@@ -29,10 +29,10 @@ func main() {
 		log.Fatalf("Could not create Cassandra schema: %s", err)
 	}
 
-	gctsdbClient, err := gctsdb.CreateGCTSDBClient(cClient)
+	gctsdbServer, err := gctsdb.CreateGCTSDBServer(cClient)
 	if err != nil {
-		log.Fatalf("Could not create gcTSDB client: %s", err)
+		log.Fatalf("Could not create gcTSDB server: %s", err)
 	}
 
-	example(gctsdbClient)
+	example(gctsdbServer)
 }
