@@ -1,7 +1,7 @@
 FROM ubuntu
 
 RUN adduser --system --home /opt/geisterchor geisterchor
-ADD gcTSDB /opt/geisterchor/gcTSDB
+ADD target/gcTSDB /opt/geisterchor/gcTSDB
 
 WORKDIR /opt/geisterchor
 USER geisterchor

@@ -2,6 +2,7 @@ package main
 
 import (
 	"geisterchor.com/gctsdb/cassandra"
+	"geisterchor.com/gctsdb/gctsdb"
 
 	log "github.com/Sirupsen/logrus"
 
@@ -28,7 +29,7 @@ func main() {
 		log.Fatalf("Could not create Cassandra schema: %s", err)
 	}
 
-	gctsdbClient, err := CreateGCTSDBClient(cClient)
+	gctsdbClient, err := gctsdb.CreateGCTSDBClient(cClient)
 	if err != nil {
 		log.Fatalf("Could not create gcTSDB client: %s", err)
 	}

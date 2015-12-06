@@ -1,14 +1,16 @@
 package main
 
 import (
+	"geisterchor.com/gctsdb/gctsdb"
+
 	log "github.com/Sirupsen/logrus"
 
 	"time"
 )
 
-func example(gctsdbClient *GCTSDBClient) {
+func example(gctsdbClient *gctsdb.GCTSDBClient) {
 	bucketSize := 7 * 24 * time.Hour
-	ch, err := NewChannel("temperature", "f32", &bucketSize)
+	ch, err := gctsdb.NewChannel("temperature", "f32", &bucketSize)
 	if err != nil {
 		log.Errorf(err.Error())
 	}
@@ -19,8 +21,8 @@ func example(gctsdbClient *GCTSDBClient) {
 	channels := gctsdbClient.GetChannels("temp")
 	log.Infof("I have found the following channels: %s", channels)
 
-	points := []DataPoint{
-		DataPoint{
+	points := []gctsdb.DataPoint{
+		gctsdb.DataPoint{
 			Timestamp: time.Now(),
 			Value:     float32(4.5),
 		},
