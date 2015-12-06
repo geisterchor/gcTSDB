@@ -37,7 +37,9 @@ func example(gctsdbServer *gctsdb.GCTSDBServer) {
 	}
 	log.Infof("Got %d points: %s", len(ps), ps)
 
-	if err := gctsdbServer.DeleteChannel("temperature"); err != nil {
-		log.Errorf("Could not delete channel: %s", err)
-	}
+	/*
+		if err := gctsdbServer.DeleteChannel("temperature"); err != nil {
+			log.Errorf("Could not delete channel: %s", err)
+		}
+	*/
 }

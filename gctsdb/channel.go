@@ -108,9 +108,15 @@ func (c *GCTSDBServer) GetChannels(prefix string) []Channel {
 
 	// TODO: Implement Channel caching, see Redis ZRANGEBYLEX (http://redis.io/commands/zrangebylex)
 
-	incrPrefix := []byte(prefix)
-	incrPrefix[len(incrPrefix)-1] += 1
-	iter := c.GetCSession().Query("SELECT channel, type, bucket_size FROM gctsdb_index WHERE pk = 0 AND channel >= ? AND channel < ?;", prefix, string(incrPrefix)).Iter()
+	var iter *gocql.Iter
+	if len(prefix) > 0 {
+		incrPrefix := []byte(prefix)
+		incrPrefix[len(incrPrefix)-1] += 1
+
+		iter = c.GetCSession().Query("SELECT channel, type, bucket_size FROM gctsdb_index WHERE pk = 0 AND channel >= ? AND channel < ?;", prefix, string(incrPrefix)).Iter()
+	} else {
+		iter = c.GetCSession().Query("SELECT channel, type, bucket_size FROM gctsdb_index WHERE pk = 0;").Iter()
+	}
 
 	channels := []Channel{}
 	var ch Channel

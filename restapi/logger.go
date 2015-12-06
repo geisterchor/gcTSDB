@@ -16,6 +16,24 @@ func NewLogger() *Logger {
 	return &Logger{}
 }
 
+func LogReq(r *http.Request) *log.Entry {
+	y := &Authentication{}
+	if context.Get(r, "AUTHENTICATION") != nil {
+		y = context.Get(r, "AUTHENTICATION").(*Authentication)
+	}
+
+	l := log.WithFields(log.Fields{})
+
+	if y != nil {
+		l = l.WithFields(log.Fields{
+			"parce-userid": y.UserId,
+			"parce-scopes": y.Scopes,
+		})
+	}
+
+	return l
+}
+
 func (lg *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	start := time.Now()
 

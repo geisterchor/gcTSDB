@@ -47,6 +47,7 @@ const (
 )
 
 func registerHandlers(x *AppHandler) {
+	x.Handle(GET, "/channels", GetChannelsHandler)
 	/*
 		x.Handle(POST, "/account/login", resources.LoginHandler)
 		x.Handle(POST, "/account/logout", resources.LogoutHandler, "AUTHENTICATED")

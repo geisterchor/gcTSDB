@@ -1,6 +1,8 @@
 package restapi
 
 import (
+	"geisterchor.com/gcTSDB/gctsdb"
+
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -29,4 +31,34 @@ func (e *HttpError) WriteResponse(w http.ResponseWriter) {
 	w.WriteHeader(e.HTTPCode)
 	resp, _ := json.Marshal(e)
 	w.Write(resp)
+}
+
+type Channel struct {
+	Name       string `json:"name"`
+	DataType   string `json:"datatype"`
+	BucketSize int64  `json:"bucketSize"`
+}
+
+func NewRestChannel(ch *gctsdb.Channel) (*Channel, *HttpError) {
+	lookup := map[string]string{
+		"i32": "int32",
+		"i64": "int64",
+		"f32": "float32",
+		"f64": "float64",
+		"dec": "decimal",
+		"str": "string",
+	}
+
+	datatype, ok := lookup[ch.DataType]
+	if !ok {
+		return nil, NewHttpError(500, "INTERNAL_SERVER_ERROR", "Channel %s has an unknown data type (%s)", ch.Name, ch.DataType)
+	}
+
+	rch := Channel{
+		Name:       ch.Name,
+		DataType:   datatype,
+		BucketSize: int64(*ch.BucketSize),
+	}
+
+	return &rch, nil
 }
