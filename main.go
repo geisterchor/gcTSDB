@@ -1,9 +1,9 @@
 package main
 
 import (
-	"geisterchor.com/gctsdb/cassandra"
-	"geisterchor.com/gctsdb/gctsdb"
-	"geisterchor.com/gctsdb/restapi"
+	"geisterchor.com/gcTSDB/cassandra"
+	"geisterchor.com/gcTSDB/gctsdb"
+	"geisterchor.com/gcTSDB/restapi"
 
 	log "github.com/Sirupsen/logrus"
 

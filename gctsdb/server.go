@@ -1,7 +1,7 @@
 package gctsdb
 
 import (
-	"geisterchor.com/gctsdb/cassandra"
+	"geisterchor.com/gcTSDB/cassandra"
 
 	"github.com/gocql/gocql"
 )

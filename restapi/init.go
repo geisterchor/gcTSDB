@@ -1,7 +1,7 @@
 package restapi
 
 import (
-	"geisterchor.com/gctsdb/gctsdb"
+	"geisterchor.com/gcTSDB/gctsdb"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/negroni"

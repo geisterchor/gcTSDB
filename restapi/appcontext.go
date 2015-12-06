@@ -1,7 +1,7 @@
 package restapi
 
 import (
-	"geisterchor.com/gctsdb/gctsdb"
+	"geisterchor.com/gcTSDB/gctsdb"
 )
 
 type AppContext struct {
