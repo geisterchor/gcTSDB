@@ -1,8 +1,9 @@
 FROM ubuntu
 
-RUN adduser --system --home /opt/geisterchor geisterchor
-ADD target/gcTSDB /opt/geisterchor/gcTSDB
+RUN adduser --system --home /opt/geisterchor/gcTSDB gctsdb
+ADD target/gcTSDB /opt/geisterchor/gcTSDB/gcTSDB
+ADD static /opt/geisterchor/gcTSDB/static/
 
-WORKDIR /opt/geisterchor
-USER geisterchor
-CMD ["/opt/geisterchor/gcTSDB"]
+WORKDIR /opt/geisterchor/gcTSDB
+USER gctsdb
+CMD ["/opt/geisterchor/gcTSDB/gcTSDB"]

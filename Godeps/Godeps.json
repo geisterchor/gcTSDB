@@ -4,12 +4,25 @@
 	"Deps": [
 		{
 			"ImportPath": "geisterchor.com/gctsdb/cassandra",
-			"Rev": "650acfc1c90e8f26184a1bca7a92efc93d639e03"
+			"Rev": "448f1a5e5742c0cdab00ebb41551a16736ad974c"
+		},
+		{
+			"ImportPath": "geisterchor.com/gctsdb/gctsdb",
+			"Rev": "448f1a5e5742c0cdab00ebb41551a16736ad974c"
+		},
+		{
+			"ImportPath": "geisterchor.com/gctsdb/restapi",
+			"Rev": "448f1a5e5742c0cdab00ebb41551a16736ad974c"
 		},
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
 			"Comment": "v0.8.6-7-g9c060de",
 			"Rev": "9c060de643590dae45da9d7c26276463bfc46fa0"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/negroni",
+			"Comment": "v0.1-70-gc7477ad",
+			"Rev": "c7477ad8e330bef55bf1ebe300cf8aa67c492d1b"
 		},
 		{
 			"ImportPath": "github.com/gocql/gocql",
@@ -19,6 +32,14 @@
 		{
 			"ImportPath": "github.com/golang/snappy",
 			"Rev": "723cc1e459b8eea2dea4583200fd60757d40097a"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Rev": "e330fd08a314ab270035e000f1543d1af53f6812"
 		},
 		{
 			"ImportPath": "github.com/shopspring/decimal",

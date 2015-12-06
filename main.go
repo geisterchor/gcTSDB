@@ -3,6 +3,7 @@ package main
 import (
 	"geisterchor.com/gctsdb/cassandra"
 	"geisterchor.com/gctsdb/gctsdb"
+	"geisterchor.com/gctsdb/restapi"
 
 	log "github.com/Sirupsen/logrus"
 
@@ -35,4 +36,6 @@ func main() {
 	}
 
 	example(gctsdbServer)
+
+	restapi.StartRestAPI(gctsdbServer)
 }
