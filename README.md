@@ -36,6 +36,13 @@ Or via Docker:
         -e CASSANDRA_USER=dev -e CASSANDRA_PASSWORD=dev geisterchor/gctsdb
 
 
+Contributing
+------------
+### Dependencies
+All Go dependencies are managed by [govendor](https://github.com/kardianos/govendor).
+The dependency code is copied to the `vendor` directory.
+
+
 License
 -------
 gcTSDB is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE.md) for the full license text.
