@@ -39,7 +39,7 @@ type Channel struct {
 	BucketSize int64  `json:"bucketSize"`
 }
 
-func NewRestChannel(ch *gctsdb.Channel) (*Channel, *HttpError) {
+func NewRestChannel(ch *gctsdb.Channel) (*Channel, error) {
 	lookup := map[string]string{
 		"i32": "int32",
 		"i64": "int64",
@@ -51,7 +51,7 @@ func NewRestChannel(ch *gctsdb.Channel) (*Channel, *HttpError) {
 
 	datatype, ok := lookup[ch.DataType]
 	if !ok {
-		return nil, NewHttpError(500, "INTERNAL_SERVER_ERROR", "Channel %s has an unknown data type (%s)", ch.Name, ch.DataType)
+		return nil, fmt.Errorf("Channel %s has an unknown data type (%s)", ch.Name, ch.DataType)
 	}
 
 	rch := Channel{

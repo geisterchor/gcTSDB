@@ -56,6 +56,135 @@ paths:
                     schema:
                         $ref: '#/definitions/Error'
 
+    /channels/{channel}:
+        delete:
+            summary: Delete specified channel and all its data
+            description: |
+                This will delete the whole channel including its data.
+            tags:
+                - Channels
+            parameters:
+                - name: channel
+                  in: path
+                  description: Channel Name
+                  required: true
+                  type: string
+            responses:
+                '201':
+                    description: deleted
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+    /data/{channel}:
+        get:
+            summary: Get data from channel
+            description: |
+                Get data from Channel
+            tags:
+                - Data
+            parameters:
+                - name: channel
+                  in: path
+                  description: Channel Name
+                  required: true
+                  type: string
+                - name: start
+                  in: query
+                  description: |
+                    start time
+                    e.g. "20151129 23:12:52.424+0100" or unixnano "1234567890"
+                  required: true
+                  type: string
+                - name: end
+                  in: query
+                  description: |
+                    end time
+                    e.g. "20151129 23:12:52.424+0100" or unixnano "1234567890"
+                  required: true
+                  type: string
+                - name: limit
+                  in: query
+                  description: "maximum number of data points (default: 100)"
+                  required: false
+                  type: string
+            responses:
+                '200':
+                    description: list of data points
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/DataPoint'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+        post:
+            summary: Add data points
+            description: |
+                Add a data points to a channel
+            tags:
+                - Data
+            parameters:
+                - name: channel
+                  in: path
+                  description: Channel Name
+                  required: true
+                  type: string
+                - name: datapoint
+                  in: body
+                  description: data point
+                  required: true
+                  schema:
+                      type: array
+                      items:
+                          $ref: '#/definitions/DataPoint'
+            responses:
+                '201':
+                    description: channel created
+                    schema:
+                        $ref: '#/definitions/Created'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+        delete:
+            summary: Delete time slice from channel
+            description: |
+                Delete time slice from Channel
+            tags:
+                - Data
+            parameters:
+                - name: channel
+                  in: path
+                  description: Channel Name
+                  required: true
+                  type: string
+                - name: start
+                  in: query
+                  description: |
+                    start time
+                    e.g. "20151129T231252.424+0100" or unixnano "1234567890"
+                  required: true
+                  type: string
+                - name: end
+                  in: query
+                  description: |
+                    end time
+                    e.g. "20151129T231252.424+0100" or unixnano "1234567890"
+                  required: true
+                  type: string
+            responses:
+                '201':
+                    description: deleted
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+
 definitions:
     Error:
         type: object
@@ -94,3 +223,21 @@ definitions:
                 format: integer
                 description: bucket size in nanoseconds
                 example: 3600000000000
+
+    DataPoint:
+        type: object
+        properties:
+            timestamp:
+                type: string
+                description: timestamp
+                example: "20151131T232456.123+0100"
+            unixnano:
+                type: number
+                format: int
+                description: |
+                    nanoseconds since unix epoch (1970-01-01 00:00:00 UTC)
+                example: 1234567890
+            value:
+                type: number
+                description: value (may be an int, float, decimal or string)
+                example: 47.11

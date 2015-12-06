@@ -18,7 +18,8 @@ func GetChannelsHandler(ctx *AppContext, w http.ResponseWriter, r *http.Request)
 	for _, ch := range channels {
 		rch, err := NewRestChannel(&ch)
 		if err != nil {
-			err.WriteResponse(w)
+			LogReq(r).Errorf("Could not read Channel '%s': %s", ch.Name, err)
+			NewHttpError(500, "UNKNOWN_ERROR", "Internal Server Error").WriteResponse(w)
 			return
 		}
 		res = append(res, *rch)
@@ -26,7 +27,7 @@ func GetChannelsHandler(ctx *AppContext, w http.ResponseWriter, r *http.Request)
 
 	str, jsonErr := json.Marshal(res)
 	if jsonErr != nil {
-		LogReq(r).Errorf("Could not json marshal object: %s", jsonErr)
+		LogReq(r).Errorf("Could not JSON marshal object: %s", jsonErr)
 		NewHttpError(500, "UNKNOWN_ERROR", "Internal Server Error").WriteResponse(w)
 		return
 	}
