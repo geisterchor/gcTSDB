@@ -6,6 +6,7 @@ info:
 basePath: "/v1"
 produces:
     - application/json
+
 paths:
     /channels:
         get:
@@ -54,7 +55,6 @@ paths:
                     description: Unexpected error
                     schema:
                         $ref: '#/definitions/Error'
-
 
 definitions:
     Error:

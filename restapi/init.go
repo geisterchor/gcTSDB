@@ -22,7 +22,7 @@ func StartRestAPI(gctsdbServer *gctsdb.GCTSDBServer) {
 
 	registerHandlers(&x)
 
-	s.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
 	n := negroni.New()
 	n.Use(negroni.NewRecovery())
