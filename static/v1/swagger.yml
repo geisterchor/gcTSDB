@@ -1,173 +1,96 @@
 swagger: '2.0'
 info:
-  title: gcTSDB REST API
-  description: An abstraction layer to use Cassandra as a Time Series Database
-  version: 0.0.1
+    title: gcTSDB REST API
+    description: An abstraction layer to use Cassandra as a Time Series Database
+    version: 0.0.1
 basePath: "/v1"
 produces:
-  - application/json
+    - application/json
 paths:
-  /account/login:
-    post:
-      summary: Login user
-      description: |
-        Use this endpoint to create a new user
-      parameters:
-      - name: loginRequest
-        in: body
-        description: LoginRequest
-        required: true
-        schema:
-          $ref: '#/definitions/LoginRequest'
-      tags:
-      - Account
-      responses:
-        '200':
-          description: Login response with auth token
-          schema:
-            $ref: '#/definitions/LoginResponse'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /account/logout:
-    post:
-      summary: Logout user
-      description: |
-        Use this endpoint to create a new user
-      parameters:
-      - name: X-Auth-Token
-        in: header
-        description: authorization token
-        required: true
-        type: string
-      tags:
-      - Account
-      responses:
-        '204':
-          description: Logged out
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /account/passwordreset:
-    post:
-      summary: "Password Reset Step 1: Send validation token via Email"
-      description: |
-        When a user has forgotten her password, she can trigger a password reset.
-        An email with a reset token will be sent to her email address.
-      tags:
-      - Account
-      parameters:
-      - name: resetPasswordRequest
-        in: body
-        description: reset password request
-        required: true
-        schema:
-          $ref: '#/definitions/ResetPasswordRequest'
-      responses:
-        '204':
-          description: password reset initiated
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    put:
-      summary: "Password Reset Step 2: Set new Password"
-      tags:
-      - Account
-      parameters:
-      - name: resetPasswordRequestStepTwo
-        in: body
-        description: reset password request step two
-        required: true
-        schema:
-          $ref: '#/definitions/ResetPasswordRequestStepTwo'
-      responses:
-        '204':
-          description: password resetted
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
+    /channels:
+        get:
+            summary: Get a list of channels
+            description: |
+                Use this endpoint to get a list of channels.
+            tags:
+                - Channels
+            parameters:
+                - name: name
+                  in: query
+                  description: name's prefix you want to filter
+                  required: false
+                  type: string
+            responses:
+                '200':
+                    description: list of channels
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Channel'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+
+        post:
+            summary: Create new channel
+            description: |
+                Use this endpoint to create a new channel
+            tags:
+                - Channels
+            parameters:
+                - name: createChannelRequest
+                  in: body
+                  description: CreateChannelRequest
+                  required: true
+                  schema:
+                      $ref: '#/definitions/Channel'
+            responses:
+                '201':
+                    description: channel created
+                    schema:
+                        $ref: '#/definitions/Created'
+                default:
+                    description: Unexpected error
+                    schema:
+                        $ref: '#/definitions/Error'
 
 
 definitions:
-  Error:
-    type: object
-    properties:
-      errorCode:
-        type: string
-        description: error code
-      errorMessage:
-        type: string
-        description: en_US error message
-  LoginRequest:
-    type: object
-    properties:
-      email:
-        type: string
-        description: email address
-        example: jane.doe@example.com
-      password:
-        type: string
-        description: password
-        example: johndoe1975
-      timeout:
-        type: number
-        format: integer
-        description: token timeout in seconds (-1 for no timeout)
-        example: 3600
-      useragent:
-        type: string
-        description: String to identify user agent
-        example: "iPhone 6: Eugen's iPhone"
-  LoginResponse:
-    type: object
-    properties:
-      userId:
-        type: string
-        description: user ID
-        example: "2342"
-      X-Auth-Token:
-        type: string
-        description: authorization token
-        example: doFLcvH6GEssMTbLg5wjQ63VN9OHIprAF4KDRGW0TWc=
-  ResetPasswordRequest:
-    type: object
-    properties:
-      email:
-        type: string
-        description: email address
-        example: jane.doe@example.com
-  ResetPasswordRequestStepTwo:
-    type: object
-    properties:
-      validationToken:
-        type: string
-        description: validation token - received by email
-        example: 40e925b062a06582a979766ef67d56999b08baaa2524361a4235bbf6cbfeaa3d
-      password:
-        type: string
-        description: new password
-        example: johndoe1975
-  CreateUserRequest:
-    type: object
-    properties:
-      email:
-        type: string
-        description: email address
-        example: jane.doe@example.com
-      password:
-        type: string
-        description: password
-        example: johndoe1975
-  Created:
-    type: object
-    properties:
-      id:
-        type: string
-        description: ID of created object
-      link:
-        type: string
-        description: URL to retrieve created object
+    Error:
+        type: object
+        properties:
+            errorCode:
+                type: string
+                description: error code
+            errorMessage:
+                type: string
+                description: en_US error message
+    Created:
+        type: object
+        properties:
+            id:
+                type: string
+                description: ID of created object
+            link:
+                type: string
+                description: URL to retrieve created object
+
+    Channel:
+        type: object
+        properties:
+            name:
+                type: string
+                description: channel name
+                example: car.wheel.frontleft.temperature
+            datatype:
+                type: string
+                description: |
+                    channel's data type.
+                    valid options: int32, int64, float32, float64, decimal, string
+                example: float32
+            bucketSize:
+                type: number
+                format: integer
+                description: bucket size in nanoseconds
+                example: 3600000000000
